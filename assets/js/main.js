@@ -54,6 +54,7 @@ function addBook(event) {
     books.push(book);
     saveBooks()
     displayBooks();
+    event.target.reset();
     document.getElementById('bookForm').reset();
 }
 
@@ -83,6 +84,15 @@ function editBook(id) {
         document.getElementById('bookFormYear').value = book.year;
         document.getElementById('bookFormIsComplete').checked = book.isComplete;
 
+        document.getElementById('bookForm').addEventListener('submit', (event) => {
+            if (!isEdit) {
+                // Logika fitur tambah buku
+                addBook(event);
+            } else {
+                // Logika fitur edit buku
+                isEdit = false; // Kembalikan state ke false
+            }
+        });
 
         deleteBook(id);
     }
