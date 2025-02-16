@@ -47,11 +47,12 @@ function addBook(event) {
         id: Date.now().toString(),
         title,
         author,
-        year,
-        isComplete
+        year: Number(year),
+        isCompleted: isComplete,
     };
 
     books.push(book);
+    saveBooks()
     displayBooks();
     document.getElementById('bookForm').reset();
 }
@@ -59,6 +60,7 @@ function addBook(event) {
 
 function deleteBook(id) {
     books = books.filter(book => book.id !== id);
+    saveBooks()
     displayBooks();
 }
 
@@ -67,6 +69,7 @@ function toggleComplete(id) {
     const book = books.find(book => book.id === id);
     if (book) {
         book.isComplete = !book.isComplete;
+        saveBooks()
         displayBooks();
     }
 }
@@ -80,7 +83,7 @@ function editBook(id) {
         document.getElementById('bookFormYear').value = book.year;
         document.getElementById('bookFormIsComplete').checked = book.isComplete;
 
-       
+
         deleteBook(id);
     }
 }
@@ -94,7 +97,7 @@ function searchBook(event) {
     const incompleteBookList = document.getElementById('incompleteBookList');
     const completeBookList = document.getElementById('completeBookList');
 
- 
+
     incompleteBookList.innerHTML = '';
     completeBookList.innerHTML = '';
 
@@ -125,3 +128,16 @@ function searchBook(event) {
 // Event listeners
 document.getElementById('bookForm').addEventListener('submit', addBook);
 document.getElementById('searchBook').addEventListener('submit', searchBook);
+
+// local
+function loadBooks() {
+    const storedBooks = JSON.parse(localStorage.getItem('books')) || [];
+    books = storedBooks;
+    displayBooks();
+}
+
+function saveBooks() {
+    localStorage.setItem('books', JSON.stringify(books));
+}
+
+loadBooks()
