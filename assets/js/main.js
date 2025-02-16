@@ -48,7 +48,7 @@ function addBook(event) {
         title,
         author,
         year: Number(year),
-        isCompleted: isComplete,
+        isComplete: isComplete,
     };
 
     books.push(book);
